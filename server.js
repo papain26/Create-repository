@@ -85,11 +85,3 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`서버 실행 중: http://localhost:${PORT}`);
 });
-```
-
-저장 후 cmd에서:
-```
-cd newsalert-server
-git add .
-git commit -m "add cors"
-git push
