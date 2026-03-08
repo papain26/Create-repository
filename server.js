@@ -3,13 +3,22 @@ const cron = require("node-cron");
 const axios = require("axios");
 
 const app = express();
+
+// CORS 설정
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
+
 app.use(express.json());
 
 const NEWS_API_KEY = "1fd8062954464eebb413b92f1c244a51";
 let keywords = ["AI", "비트코인", "기후변화"];
 let articles = [];
 
-// 뉴스 가져오기 함수
 async function fetchNews() {
   console.log("뉴스 가져오는 중...");
   const allArticles = [];
@@ -38,13 +47,9 @@ async function fetchNews() {
   console.log(`총 ${articles.length}개 기사 수집 완료`);
 }
 
-// 30분마다 뉴스 자동 수집
 cron.schedule("*/30 * * * *", fetchNews);
-
-// 서버 시작시 바로 수집
 fetchNews();
 
-// API 엔드포인트
 app.get("/articles", (req, res) => {
   const { keyword } = req.query;
   if (keyword && keyword !== "전체") {
@@ -80,3 +85,11 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`서버 실행 중: http://localhost:${PORT}`);
 });
+```
+
+저장 후 cmd에서:
+```
+cd newsalert-server
+git add .
+git commit -m "add cors"
+git push
