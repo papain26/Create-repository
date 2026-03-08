@@ -76,7 +76,7 @@ app.get("/", (req, res) => {
   res.json({ status: "ok", message: "NewsAlert 서버 실행 중!" });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`서버 실행 중: http://localhost:${PORT}`);
 });
